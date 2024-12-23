@@ -156,7 +156,7 @@ const Home = () => {
                     rel="noopener noreferrer"
                     className="text-green-500 font-semibold flex items-center"
                   >
-                    <FaWhatsapp className="mr-2" /> Contact on WhatsApp
+                    <FaWhatsapp className="mr-2" /> Contacter sur WhatsApp
                   </a>
                 </div>
               </div>
