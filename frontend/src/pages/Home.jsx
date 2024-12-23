@@ -112,17 +112,27 @@ const Home = () => {
                 {/* Image Slider */}
                 <div className="w-full h-64">
                   {post.images && post.images.length > 0 ? (
-                    <Slider {...sliderSettings}>
-                      {post.images.map((image, index) => (
-                        <Zoom key={index}>
-                          <img
-                            src={image}
-                            alt={`Post Image ${index + 1}`}
-                            className="w-full h-64 object-cover cursor-pointer"
-                          />
-                        </Zoom>
-                      ))}
-                    </Slider>
+                    post.images.length > 1 ? (
+                      <Slider {...sliderSettings}>
+                        {post.images.map((image, index) => (
+                          <Zoom key={index}>
+                            <img
+                              src={image}
+                              alt={`Post Image ${index + 1}`}
+                              className="w-full h-64 object-cover cursor-pointer"
+                            />
+                          </Zoom>
+                        ))}
+                      </Slider>
+                    ) : (
+                      <Zoom>
+                        <img
+                          src={post.images[0]}
+                          alt="Post Image"
+                          className="w-full h-64 object-cover cursor-pointer"
+                        />
+                      </Zoom>
+                    )
                   ) : (
                     <div className="flex items-center justify-center h-full bg-gray-200 text-gray-500">
                       No Images Available
