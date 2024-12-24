@@ -156,7 +156,7 @@ const CreatePost = () => {
           />
         </div>
 
-        <label className="block text-gray-700 font-medium mb-2">Images (maximum 5 images)</label>
+        <label className="block text-gray-700 font-medium mb-2">Images <span className = "text-red-500">(maximum 5 images)</span> </label>
         <input
           type="file"
           multiple
