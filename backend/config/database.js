@@ -2,10 +2,7 @@ import mongoose from 'mongoose';
 
 const connectDatabase = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    const conn = await mongoose.connect(process.env.MONGO_URI);
     console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
     console.error(`Database Error: ${error.message}`);
@@ -14,4 +11,3 @@ const connectDatabase = async () => {
 };
 
 export default connectDatabase;
-

@@ -20,17 +20,17 @@ const __dirname = path.dirname(__filename)
 connectDatabase()
 
 // Middleware
-app.use(express.json({ limit: '5mb' }))// Parse JSON requests with a size limit
-app.use(express.urlencoded({ extended: true }))// Parse URL-encoded form data
+app.use(express.json({ limit: '5mb' })) // Parse JSON requests with a size limit
+app.use(express.urlencoded({ extended: true })) // Parse URL-encoded form data
 app.use(cookieParser())
 
 // CORS Handling Middleware
 app.use((req, res, next) => {
-  const allowedOrigins = req.headers.origin || '*'// Allow dynamic origins
+  const allowedOrigins = req.headers.origin || '*' // Allow dynamic origins
   res.header('Access-Control-Allow-Origin', allowedOrigins)
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
   res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-  res.header('Access-Control-Allow-Credentials', 'true')// Allow cookies
+  res.header('Access-Control-Allow-Credentials', 'true') // Allow cookies
   if (req.method === 'OPTIONS') {
     return res.sendStatus(204)
   }
@@ -55,4 +55,3 @@ if (process.env.NODE_ENV === 'production') {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
 })
-

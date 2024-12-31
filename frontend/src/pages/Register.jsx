@@ -1,8 +1,11 @@
+// src/pages/Register.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useUserStore from '../stores/useUserStore';
+import { useTranslation } from 'react-i18next';
 
 const Register = () => {
+  const { t } = useTranslation(); // Hook to get translations
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,7 +26,7 @@ const Register = () => {
         onSubmit={handleRegister}
         className="bg-emerald-400 text-white p-6 shadow-md w-full max-w-sm rounded-lg"
       >
-        <h2 className="text-xl font-semibold text-center mb-6">Inscription</h2>
+        <h2 className="text-xl font-semibold text-center mb-6">{t('register')}</h2> {/* Translated Title */}
         {error && (
           <div className="text-red-500 text-sm text-center mb-4">{error}</div>
         )}
@@ -32,7 +35,7 @@ const Register = () => {
           htmlFor="name"
           className="block text-sm font-medium text-white mb-1"
         >
-          Nom
+          {t('name')} {/* Translated name label */}
         </label>
         <input
           id="name"
@@ -40,14 +43,14 @@ const Register = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           className="block w-full p-2 border bg-emerald-400 rounded mb-4 text-white focus:ring-blue-500 focus:border-blue-500 placeholder:text-white"
-          placeholder="Entrez votre nom"
+          placeholder={t('namePlaceholder')} // Corrected comment placement
         />
 
         <label
           htmlFor="email"
           className="block text-sm font-medium text-white mb-1"
         >
-          Email
+          {t('email')} {/* Translated email label */}
         </label>
         <input
           id="email"
@@ -55,14 +58,14 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className="block w-full p-2 border border-white rounded mb-4 text-white bg-emerald-400 focus:ring-blue-500 focus:border-blue-500 placeholder:text-white"
-          placeholder="Entrez votre email"
+          placeholder={t('emailPlaceholder')} // Corrected comment placement
         />
 
         <label
           htmlFor="password"
           className="block text-sm font-medium text-white mb-1"
         >
-          Mot de passe
+          {t('password')} {/* Translated password label */}
         </label>
         <input
           id="password"
@@ -70,14 +73,14 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           className="block w-full p-2 border border-white bg-emerald-400 rounded mb-6 text-white focus:ring-blue-500 focus:border-blue-500 placeholder:text-white"
-          placeholder="Entrez votre mot de passe"
+          placeholder={t('passwordPlaceholder')} // Corrected comment placement
         />
 
         <button
           type="submit"
           className="w-full py-2 bg-white text-emerald-400 font-bold rounded hover:bg-gray-200 transition"
         >
-          Inscription
+          {t('register')} {/* Translated button */}
         </button>
       </form>
     </div>

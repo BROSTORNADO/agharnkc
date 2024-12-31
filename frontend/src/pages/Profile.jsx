@@ -2,8 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { FaTrash } from 'react-icons/fa'; // Importation de l'icône de la corbeille
 import usePostStore from '../stores/usePostStore';
 import useUserStore from '../stores/useUserStore';
+import { useTranslation } from 'react-i18next'; // Import useTranslation hook
 
 const Profile = () => {
+  const { t } = useTranslation(); // Initialize the translation hook
   const { posts, fetchUserPosts, deletePost, error, loading } = usePostStore();
   const { user } = useUserStore();
 
@@ -32,14 +34,14 @@ const Profile = () => {
   };
 
   if (loading) {
-    return <p className="text-center text-gray-500">Chargement...</p>;
+    return <p className="text-center text-gray-500">{t('loading')}</p>; // Loading text translated
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="bg-emerald-400 text-white rounded-lg p-6 shadow-md mb-8">
-        <h1 className="text-3xl font-bold">Bienvenue, {user?.name || 'Utilisateur'} !</h1>
-        <p className="mt-2 text-lg">Voici vos publications :</p>
+        <h1 className="text-3xl font-bold">{t('welcome')}, {user?.name || t('user')}</h1> {/* Translated welcome and user */}
+        <p className="mt-2 text-lg">{t('yourPosts')}</p> {/* Translated your posts */}
       </div>
 
       {error && (
@@ -50,7 +52,7 @@ const Profile = () => {
 
       {posts.length === 0 ? (
         <div className="bg-white text-center p-6 shadow-md rounded-lg">
-          <p className="text-lg text-gray-700">Aucune publication trouvée. Créez votre première publication dès maintenant !</p>
+          <p className="text-lg text-gray-700">{t('noPosts')}</p> {/* Translated no posts message */}
         </div>
       ) : (
         <>
@@ -65,7 +67,7 @@ const Profile = () => {
                     onClick={() => handleDelete(post._id)}
                     className="flex items-center justify-center gap-2 bg-red-500 text-white px-3 py-1 text-sm rounded hover:bg-red-400 transition"
                   >
-                    <FaTrash /> Supprimer
+                    <FaTrash /> {t('delete')} {/* Translated delete */}
                   </button>
                 </div>
               </div>
@@ -79,7 +81,7 @@ const Profile = () => {
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
             >
-              Précédent
+              {t('previous')} {/* Translated previous */}
             </button>
             {[...Array(totalPages)].map((_, index) => (
               <button
@@ -97,7 +99,7 @@ const Profile = () => {
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
             >
-              Suivant
+              {t('next')} {/* Translated next */}
             </button>
           </div>
         </>
