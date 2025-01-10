@@ -67,6 +67,28 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  const openFullscreen = (images, index) => {
+    setFullscreenImages(images);
+    setFullscreenIndex(index);
+  };
+
+  const closeFullscreen = () => {
+    setFullscreenImages(null);
+  };
+
+  const handleSwipe = useSwipeable({
+    onSwipedLeft: () => {
+      if (fullscreenIndex < fullscreenImages.length - 1) {
+        setFullscreenIndex(fullscreenIndex + 1);
+      }
+    },
+    onSwipedRight: () => {
+      if (fullscreenIndex > 0) {
+        setFullscreenIndex(fullscreenIndex - 1);
+      }
+    },
+  });
+
   const sliderSettings = {
     dots: true,
     infinite: true,
