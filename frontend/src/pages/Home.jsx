@@ -55,17 +55,6 @@ const Home = () => {
     fetchPosts();
   }, [selectedLocation]);
 
-  const sliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    arrows: true,
-  };
-
   const totalPages = Math.ceil(posts.length / postsPerPage);
 
   const currentPosts = posts.slice(
@@ -78,28 +67,34 @@ const Home = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const openFullscreen = (images, index) => {
-    setFullscreenImages(images);
-    setFullscreenIndex(index);
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    arrows: true,
   };
 
-  const closeFullscreen = () => {
-    setFullscreenImages(null);
-    setFullscreenIndex(0);
-  };
+  const pageNumbers = () => {
+    const pages = [];
+    const visiblePages = 4;
+    let startPage = Math.max(currentPage - Math.floor(visiblePages / 2), 1);
+    let endPage = startPage + visiblePages - 1;
 
-  const handleSwipe = useSwipeable({
-    onSwipedLeft: () => {
-      if (fullscreenIndex < fullscreenImages.length - 1) {
-        setFullscreenIndex(fullscreenIndex + 1);
-      }
-    },
-    onSwipedRight: () => {
-      if (fullscreenIndex > 0) {
-        setFullscreenIndex(fullscreenIndex - 1);
-      }
-    },
-  });
+    if (endPage > totalPages) {
+      endPage = totalPages;
+      startPage = Math.max(endPage - visiblePages + 1, 1);
+    }
+
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(i);
+    }
+
+    return pages;
+  };
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen">
@@ -109,7 +104,7 @@ const Home = () => {
           onChange={(e) => setSelectedLocation(e.target.value)}
           className="px-4 py-2 border border-gray-300 rounded"
         >
-          <option value="">All - الكل </option>
+          <option value="">All - الكل</option>
           {locations.map((location, index) => (
             <option key={index} value={location}>
               {location}
@@ -155,7 +150,7 @@ const Home = () => {
                   </h3>
                   <p className="text-gray-600 mb-4">{post.description}</p>
                   <p className="text-gray-700 font-bold mb-2 flex items-center">
-                    <FaMapMarkerAlt className="text-red-500 mr-2" />{' '}
+                    <FaMapMarkerAlt className="text-red-500 mr-2" />
                     <span className="text-sm mt-2">{post.location}</span>
                   </p>
                   <a
@@ -164,7 +159,7 @@ const Home = () => {
                     rel="noopener noreferrer"
                     className="text-green-500 font-semibold flex items-center"
                   >
-                    <FaWhatsapp className="mr-2" />{' '}
+                    <FaWhatsapp className="mr-2" />
                     <span className="text-sm mt-2">Contacter sur WhatsApp</span>
                   </a>
                 </div>
@@ -185,17 +180,17 @@ const Home = () => {
               >
                 Précédent
               </button>
-              {[...Array(totalPages)].map((_, index) => (
+              {pageNumbers().map((page) => (
                 <button
-                  key={index}
+                  key={page}
                   className={`px-4 py-2 mx-1 rounded ${
-                    currentPage === index + 1
+                    currentPage === page
                       ? 'bg-emerald-500 text-white'
                       : 'bg-gray-200 text-gray-800'
                   }`}
-                  onClick={() => handlePageChange(index + 1)}
+                  onClick={() => handlePageChange(page)}
                 >
-                  {index + 1}
+                  {page}
                 </button>
               ))}
               <button
