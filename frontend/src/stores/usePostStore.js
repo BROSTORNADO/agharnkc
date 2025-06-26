@@ -1,14 +1,8 @@
 import { create } from 'zustand'
-import axios from 'axios' // Using axios directly
+import axios from 'axios'
 
 // Base URL
 const BASE_URL = 'https://agharnkc.onrender.com/api'
-
-// Set token header globally
-const token = localStorage.getItem('token')
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-}
 
 const usePostStore = create((set) => ({
   posts: [],
@@ -20,7 +14,13 @@ const usePostStore = create((set) => ({
   fetchPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get(`${BASE_URL}/posts`)
+      const token = localStorage.getItem('token')
+      const { data } = await axios.get(`${BASE_URL}/posts`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
       set({ posts: data, loading: false })
     } catch (error) {
       set({
@@ -33,7 +33,13 @@ const usePostStore = create((set) => ({
   fetchUserPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get(`${BASE_URL}/posts/user`)
+      const token = localStorage.getItem('token')
+      const { data } = await axios.get(`${BASE_URL}/posts/user`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
       set({ posts: data, loading: false })
     } catch (error) {
       if (error.response?.status === 401) {
@@ -56,8 +62,13 @@ const usePostStore = create((set) => ({
   createPost: async (formData) => {
     set({ error: null })
     try {
+      const token = localStorage.getItem('token')
       const { data } = await axios.post(`${BASE_URL}/posts`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true,
       })
       set((state) => ({ posts: [data, ...state.posts] }))
     } catch (error) {
@@ -75,7 +86,14 @@ const usePostStore = create((set) => ({
   deletePost: async (postId) => {
     set({ error: null })
     try {
-      const response = await axios.delete(`${BASE_URL}/posts/${postId}`)
+      const token = localStorage.getItem('token')
+      const response = await axios.delete(`${BASE_URL}/posts/${postId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
+      })
+
       if (response.status === 200 || response.status === 204) {
         set((state) => ({
           posts: state.posts.filter((post) => post._id !== postId),
