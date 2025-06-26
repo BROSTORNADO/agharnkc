@@ -1,11 +1,16 @@
+// lib/axios.js
 import axios from 'axios'
 
-const axiosInstance = axios.create({
-  baseURL:
-    import.meta.env.MODE === 'development'
-      ? 'http://localhost:5000/api'
-      : '/api',
-  withCredentials: true, // Send cookies to the server
+const instance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  withCredentials: true,
 })
 
-export default axiosInstance
+// Add token to headers if available
+const token = localStorage.getItem('token')
+if (token) {
+  instance.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
+export default instance
+

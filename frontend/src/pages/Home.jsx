@@ -42,18 +42,24 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const res = await axios.get('/api/posts', {
+  const fetchPosts = async () => {
+    try {
+      let res;
+      if (selectedLocation) {
+        res = await axios.get('http://localhost:5000/api/posts', {
           params: { location: selectedLocation },
         });
-        setPosts(res.data);
-      } catch (error) {
-        console.error('Error fetching posts', error);
+      } else {
+        res = await axios.get('http://localhost:5000/api/posts');
       }
-    };
-    fetchPosts();
-  }, [selectedLocation]);
+      setPosts(res.data);
+    } catch (error) {
+      console.error('Error fetching posts', error);
+    }
+  };
+
+  fetchPosts();
+}, [selectedLocation]);
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
 

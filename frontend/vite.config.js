@@ -4,12 +4,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
-      '/api': {
-        target: 'https://aghar.onrender.com/', // Your backend URL
-        changeOrigin: true,
-        secure: true,
-      },
+   proxy: {
+      '/api': 'http://localhost:5000',  // Remove the extra /api here
     },
   },
 })
+

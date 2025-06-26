@@ -103,26 +103,37 @@ export const getPostById = async (req, res) => {
 export const deletePost = async (req, res) => {
   try {
     const post = await Post.findById(req.params.id);
+
     if (!post) {
       return res.status(404).json({ message: 'Post not found' });
     }
 
-    // Delete associated images from Cloudinary
-    await Promise.all(
-      post.images.map(async (imageUrl) => {
-        const publicId = imageUrl.split('/').pop().split('.')[0]; // Extract publicId from URL
-        await cloudinary.v2.uploader.destroy(`posts/${publicId}`);
-      })
-    );
+    // Delete images from Cloudinary
+    const deleteImages = post.images.map(async (imageUrl) => {
+      try {
+        // Extract the publicId from the image URL
+        const parts = imageUrl.split('/');
+        const fileName = parts[parts.length - 1].split('.')[0]; // e.g., abc123
+        const publicId = `posts/${fileName}`;
 
-    await Post.findByIdAndDelete(req.params.id);
+        await cloudinary.uploader.destroy(publicId);
+      } catch (err) {
+        console.warn(`Warning: Failed to delete image ${imageUrl}:`, err.message);
+        // Continue deleting other images even if one fails
+      }
+    });
+
+    await Promise.all(deleteImages);
+
+    // Delete the post from the database
+    await post.deleteOne();
+
     res.status(200).json({ message: 'Post deleted successfully' });
   } catch (error) {
     console.error(`Error deleting post: ${error.message}`);
     res.status(500).json({ message: 'Server error. Please try again later.' });
   }
 };
-
 /**
  * Get posts by the connected user
  * @route GET /api/posts/user
