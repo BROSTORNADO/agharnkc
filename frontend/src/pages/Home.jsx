@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../lib/axios';
+import axios from '../lib/axios.js';
 import Slider from 'react-slick';
 import { FaMapMarkerAlt, FaWhatsapp, FaTimes } from 'react-icons/fa';
 import 'slick-carousel/slick/slick.css';
