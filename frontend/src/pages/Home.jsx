@@ -46,11 +46,11 @@ const Home = () => {
     try {
       let res;
       if (selectedLocation) {
-        res = await axios.get('https://agharnkc.onrender.com/api/posts', {
+        res = await axios.get('/posts', {
           params: { location: selectedLocation },
         });
       } else {
-        res = await axios.get('https://agharnkc.onrender.com/api/posts');
+        res = await axios.get('/posts');
       }
       setPosts(res.data);
     } catch (error) {
