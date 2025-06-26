@@ -1,13 +1,12 @@
 // lib/axios.js
 import axios from 'axios'
 
-// Always use Render deployment as base URL
 const instance = axios.create({
-  baseURL: 'https://agharnkc.onrender.com/api', // ✅ Updated to your Render URL
-  withCredentials: true, // optional, if backend uses cookies
+  baseURL: 'https://agharnkc.onrender.com/api', // 🔥 hardcoded, never localhost
+  withCredentials: true,
 })
 
-// Automatically attach token on every request
+// Add token on every request
 instance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token')
   if (token) {
