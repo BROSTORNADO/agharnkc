@@ -2,7 +2,7 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'https://agharnkc.onrender.com/api', // ✅ Updated default URL
   withCredentials: true,
 })
 
@@ -13,4 +13,3 @@ if (token) {
 }
 
 export default instance
-
