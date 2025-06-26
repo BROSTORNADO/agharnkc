@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from '../lib/axios.js';
+import axios from 'axios';
 import Slider from 'react-slick';
 import { FaMapMarkerAlt, FaWhatsapp, FaTimes } from 'react-icons/fa';
 import 'slick-carousel/slick/slick.css';
@@ -30,8 +30,8 @@ const Home = () => {
     const fetchPosts = async () => {
       try {
         const res = selectedLocation
-          ? await axios.get('/posts', { params: { location: selectedLocation } })
-          : await axios.get('/posts');
+          ? await axios.get('/api/posts', { params: { location: selectedLocation } })
+          : await axios.get('/api/posts');
         setPosts(res.data);
       } catch (error) {
         console.error('Error fetching posts', error);
