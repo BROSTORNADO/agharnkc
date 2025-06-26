@@ -19,7 +19,7 @@ const usePostStore = create((set) => ({
   fetchPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get('/api/posts')
+      const { data } = await axios.get('https://agharnkc.onrender.com/api/posts')
       set({ posts: data, loading: false })
     } catch (error) {
       set({
