@@ -1,7 +1,10 @@
 import { create } from 'zustand'
-import axios from '../lib/axios' // Custom axios instance
+import axios from 'axios' // Using axios directly
 
-// Setup: Set Authorization header globally if token exists
+// Base URL
+const BASE_URL = 'https://agharnkc.onrender.com/api'
+
+// Set token header globally
 const token = localStorage.getItem('token')
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
@@ -12,14 +15,12 @@ const usePostStore = create((set) => ({
   error: null,
   loading: false,
 
-  // Clear errors (useful for forms or on navigation)
   clearError: () => set({ error: null }),
 
-  // Fetch all posts
   fetchPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get('https://agharnkc.onrender.com/api/posts')
+      const { data } = await axios.get(`${BASE_URL}/posts`)
       set({ posts: data, loading: false })
     } catch (error) {
       set({
@@ -29,11 +30,10 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Fetch posts created by the logged-in user
   fetchUserPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get('/posts/user')
+      const { data } = await axios.get(`${BASE_URL}/posts/user`)
       set({ posts: data, loading: false })
     } catch (error) {
       if (error.response?.status === 401) {
@@ -53,11 +53,10 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Create a new post
   createPost: async (formData) => {
     set({ error: null })
     try {
-      const { data } = await axios.post('/posts', formData, {
+      const { data } = await axios.post(`${BASE_URL}/posts`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       })
       set((state) => ({ posts: [data, ...state.posts] }))
@@ -73,12 +72,10 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Delete a post by ID
   deletePost: async (postId) => {
     set({ error: null })
     try {
-      const response = await axios.delete(`/posts/${postId}`)
-
+      const response = await axios.delete(`${BASE_URL}/posts/${postId}`)
       if (response.status === 200 || response.status === 204) {
         set((state) => ({
           posts: state.posts.filter((post) => post._id !== postId),
@@ -87,8 +84,6 @@ const usePostStore = create((set) => ({
         set({ error: 'Failed to delete the post. Try again.' })
       }
     } catch (error) {
-      console.error('Delete Post Error:', error)
-
       if (error.response?.status === 401) {
         localStorage.removeItem('token')
         set({ error: 'Session expired. Please log in again.', posts: [] })
@@ -101,6 +96,5 @@ const usePostStore = create((set) => ({
     }
   },
 }))
-;
-export default usePostStore
 
+export default usePostStore
