@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import axios from 'axios'
+import axios from '../lib/axios'
 
 // Base URL
 const BASE_URL = 'https://agharnkc.onrender.com/api'
