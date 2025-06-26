@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
    proxy: {
-      '/api': 'http://localhost:5000',  // Remove the extra /api here
+      '/api': 'http://agharnkc.onrender.com',  // Remove the extra /api here
     },
   },
 })
