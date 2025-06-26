@@ -16,50 +16,30 @@ const Home = () => {
   const postsPerPage = 6;
 
   const locations = [
-    'Dar Naim - دار النعيم',
-    'Teyarett - تيارت',
-    'Toujouonine - توجونين',
-    'Ksar - لكصر',
-    'Sebkha - السبخة',
-    'Tevragh Zeina - تفرغ زينة',
-    'Arafat - عرفات',
-    'El Mina - الميناء',
-    'Riyadh - الرياض',
-    'Elvelouja - الفلوجة',
-    'Melah - ملح',
-    'Tarhil - الترحيل',
-    'Bouhdida - بوحديدة',
-    'Tensweylm - تنسويلم',
-    'Carefour - كرفور',
-    'El Matar - المطار',
-    'Socogim - سوكوجيم',
-    'Soukouk - الصكوك',
-    'Premier - ابريمير',
-    'Ain Talh - عين الطلح',
-    'Zaatar - الزعطر',
-    'Cinquième - سينكيم',
-    'Sixième - سيزيم',
+    'Dar Naim - دار النعيم', 'Teyarett - تيارت', 'Toujouonine - توجونين',
+    'Ksar - لكصر', 'Sebkha - السبخة', 'Tevragh Zeina - تفرغ زينة',
+    'Arafat - عرفات', 'El Mina - الميناء', 'Riyadh - الرياض',
+    'Elvelouja - الفلوجة', 'Melah - ملح', 'Tarhil - الترحيل',
+    'Bouhdida - بوحديدة', 'Tensweylm - تنسويلم', 'Carefour - كرفور',
+    'El Matar - المطار', 'Socogim - سوكوجيم', 'Soukouk - الصكوك',
+    'Premier - ابريمير', 'Ain Talh - عين الطلح', 'Zaatar - الزعطر',
+    'Cinquième - سينكيم', 'Sixième - سيزيم',
   ];
 
   useEffect(() => {
-  const fetchPosts = async () => {
-    try {
-      let res;
-      if (selectedLocation) {
-        res = await axios.get('/posts', {
-          params: { location: selectedLocation },
-        });
-      } else {
-        res = await axios.get('/posts');
+    const fetchPosts = async () => {
+      try {
+        const res = selectedLocation
+          ? await axios.get('/posts', { params: { location: selectedLocation } })
+          : await axios.get('/posts');
+        setPosts(res.data);
+      } catch (error) {
+        console.error('Error fetching posts', error);
       }
-      setPosts(res.data);
-    } catch (error) {
-      console.error('Error fetching posts', error);
-    }
-  };
+    };
 
-  fetchPosts();
-}, [selectedLocation]);
+    fetchPosts();
+  }, [selectedLocation]);
 
   const totalPages = Math.ceil(posts.length / postsPerPage);
 
@@ -78,9 +58,7 @@ const Home = () => {
     setFullscreenIndex(index);
   };
 
-  const closeFullscreen = () => {
-    setFullscreenImages(null);
-  };
+  const closeFullscreen = () => setFullscreenImages(null);
 
   const handleSwipe = useSwipeable({
     onSwipedLeft: () => {
@@ -154,7 +132,7 @@ const Home = () => {
                 className="bg-white shadow-lg rounded-lg overflow-hidden"
               >
                 <div className="w-full h-64">
-                  {post.images && post.images.length > 0 ? (
+                  {post.images?.length > 0 ? (
                     <Slider {...sliderSettings}>
                       {post.images.map((image, index) => (
                         <img
@@ -199,9 +177,7 @@ const Home = () => {
             <div className="flex justify-center mt-8">
               <button
                 className={`px-4 py-2 mx-1 rounded ${
-                  currentPage === 1
-                    ? 'bg-gray-300'
-                    : 'bg-emerald-400 text-white'
+                  currentPage === 1 ? 'bg-gray-300' : 'bg-emerald-400 text-white'
                 }`}
                 onClick={() => handlePageChange(currentPage - 1)}
                 disabled={currentPage === 1}
@@ -262,4 +238,3 @@ const Home = () => {
 };
 
 export default Home;
-
