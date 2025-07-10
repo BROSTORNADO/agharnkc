@@ -1,25 +1,17 @@
 import { create } from 'zustand'
-import axios from '../lib/axios' // Custom axios instance
-
-// Setup: Set Authorization header globally if token exists
-const token = localStorage.getItem('token')
-if (token) {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
-}
+import axios from '../lib/axios' // Uses the correct base URL
 
 const usePostStore = create((set) => ({
   posts: [],
   error: null,
   loading: false,
 
-  // Clear errors (useful for forms or on navigation)
   clearError: () => set({ error: null }),
 
-  // Fetch all posts
   fetchPosts: async () => {
     set({ loading: true, error: null })
     try {
-      const { data } = await axios.get('/api/posts')
+      const { data } = await axios.get('/posts')
       set({ posts: data, loading: false })
     } catch (error) {
       set({
@@ -29,7 +21,6 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Fetch posts created by the logged-in user
   fetchUserPosts: async () => {
     set({ loading: true, error: null })
     try {
@@ -53,7 +44,6 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Create a new post
   createPost: async (formData) => {
     set({ error: null })
     try {
@@ -73,7 +63,6 @@ const usePostStore = create((set) => ({
     }
   },
 
-  // Delete a post by ID
   deletePost: async (postId) => {
     set({ error: null })
     try {
@@ -87,8 +76,6 @@ const usePostStore = create((set) => ({
         set({ error: 'Failed to delete the post. Try again.' })
       }
     } catch (error) {
-      console.error('Delete Post Error:', error)
-
       if (error.response?.status === 401) {
         localStorage.removeItem('token')
         set({ error: 'Session expired. Please log in again.', posts: [] })
@@ -101,6 +88,6 @@ const usePostStore = create((set) => ({
     }
   },
 }))
-;
+
 export default usePostStore
 
